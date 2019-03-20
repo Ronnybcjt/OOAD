@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <script src="../../component/official.js" type="text/javascript"></script>
+    <style>
+        .center {
+            margin: auto;
+            width: 50%;
+            padding: 10px;
+        }
+
+        .custom-select {
+            position: relative;
+            font-family: Arial;
+        }
+
+        .custom-select select {
+            display: none;
+
+        }
+
+        .select-selected {
+            background-color: DodgerBlue;
+        }
+
+
+        .select-selected:after {
+            position: absolute;
+            content: "";
+            top: 14px;
+            right: 10px;
+            width: 0;
+            height: 0;
+            border: 6px solid transparent;
+            border-color: #fff transparent transparent transparent;
+        }
+
+
+        .select-selected.select-arrow-active:after {
+            border-color: transparent transparent #fff transparent;
+            top: 7px;
+        }
+
+
+        .select-items div,
+        .select-selected {
+            color: #ffffff;
+            padding: 8px 16px;
+            border: 1px solid transparent;
+            border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+            cursor: pointer;
+            user-select: none;
+        }
+
+
+        .select-items {
+            position: absolute;
+            background-color: DodgerBlue;
+            top: 100%;
+            left: 0;
+            right: 0;
+            z-index: 99;
+        }
+
+
+        .select-hide {
+            display: none;
+        }
+
+        .select-items div:hover,
+        .same-as-selected {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <script src="../../../node_modules/axios/dist/axios.min.js"></script>
+    <script>
+        function showData() {
+            axios.get("http://localhost:4001/getdata").then((res) => {
+                var a = []
+                a = res.data
+                generate_table(a)
+            })
+        }
+        function createUser() {
+            if (checkEmpty()) {
+                var obj = { id: document.getElementById("id").value, password: document.getElementById("password").value, user_type: document.getElementById("type").value, sex: document.getElementById("sex").value, name: document.getElementById("name").value, lastname: document.getElementById("lastname").value }
+                console.log(obj)
+                axios.post("http://localhost:4001/adduser", obj).then((res) => {
+                    if (res.data.status) {
+                        location.reload();
+                    } else {
+                        alert("username นี้มีอยู่แล้วในระบบ")
+                    }
+                })
+            } else {
+                alert("กรอกข้อมูลให้ครบถ้วน")
+            }
+        }
+
+        function edit() {
+            if (checkEmpty()) {
+                var obj = { id: document.getElementById("id").value, password: document.getElementById("password").value, user_type: document.getElementById("type").value, sex: document.getElementById("sex").value, name: document.getElementById("name").value, lastname: document.getElementById("lastname").value }
+                console.log(obj)
+                axios.post("http://localhost:4001/settinguser", obj).then((res) => {
+                    location.reload();
+                })
+            } else {
+                alert("กรุณาเลือกรายการที่ต้องการแก้ไข้")
+            }
+        }
+        function deleteRow(a) {
+            var checkDelete = confirm("ต้องการจะลบข้อมูลนี้จริงๆหรือไม่")
+            var data = {id: a}
+            if (checkDelete) {
+                if (a !== "") {
+                    axios.post("http://localhost:4001/deleteuser", data).then((res) => {
+                        location.reload();
+                    })
+                } else {
+                    alert("กรุณาลองใหม่ภายหลัง")
+                }
+            } else {
+                console.log("cancle")
+            }
+        }
+        document.addEventListener("DOMContentLoaded", showData());
+    </script>
+    <nav class="navbar navbar-light bg-primary">
+        <h1 class="text-light container">OOAD</h1>
+        <form class="form-inline">
+            <a class="btn btn-outline-light my-2 my-sm-0" href="../officialPage.html">Home</a>
+        </form>
+    </nav>
+    <br>
+    <br>
+    <div class="container p-3 mb-2 bg-light text-dark">
+        <div class="row">
+            <div class="col">
+                <label>รหัสประจำตัว</label>
+                <input type="text" class="form-control" id="id">
+            </div>
+            <div class="col">
+                <label>รหัสผ่าน</label>
+                <input type="password" class="form-control" id="password">
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col">
+                <label>เพศ</label>
+                <select class="custom-select" id="sex">
+                    <option value="ชาย">ชาย</option>
+                    <option value="หญิง">หญิง</option>
+                </select>
+            </div>
+            <div class="col">
+                <label>ประเภทผู้ใช้งาน</label>
+                <select class="custom-select" id="type">
+                    <option value="นิสิต">นิสิต</option>
+                    <option value="เจ้าหน้าที่">เจ้าหน้าที่</option>
+                    <option value="คนคุมสอบ">คนคุมสอบ</option>
+                    <option value="อาจารย์">อาจารย์</option>
+                </select>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col">
+                <label>ชื่อ</label>
+                <input type="text" class="form-control" id="name">
+            </div>
+            <div class="col">
+                <label>นามสกุล</label>
+                <input type="text" class="form-control" id="lastname">
+            </div>
+        </div>
+        <br>
+        <div class="justify-content-center container">
+            <button type="button" class="btn btn-primary" onclick="edit()">แก้ไข</button>
+            <button type="button" class="btn btn-primary" onclick="clearData()">ยกเลิก</button>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row justify-content-center">
+            <button type="button" class="btn btn-success btn-lg btn-block"
+                onclick="createUser()">เพิ่มข้อมูลผู้ใช้</button>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="container">
+        <div class="row">
+            <table class="table" id="list">
+                <tr>
+                    <th scope="col">รหัสประจำตัว</th>
+                    <th scope="col">รหัสผ่าน</th>
+                    <th scope="col">ประเภทผู้ใช้งาน</th>
+                    <th scope="col">เพศ</th>
+                    <th scope="col">ชื่อ</th>
+                    <th scope="col">นามสกุล</th>
+                    <th scope="col"></th>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

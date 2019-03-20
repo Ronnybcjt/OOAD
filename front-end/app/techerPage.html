@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <script src="../component/official.js" type="text/javascript"></script>
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        .containerCenter {
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .img-center {
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-dark bg-primary">
+        <h1 class="text-light">
+            OOAD
+        </h1>
+    </nav>
+    <div class="container">
+        <br>
+        <br>
+        <br>
+        <div class="row">
+            <div class="col">
+                <a onclick="changePageCMS()">
+                    <img src="../assert/exam.png" class="img-center">
+                    <p class="text-center text-primary">จัดการการสอบ</p>
+                </a>
+            </div>
+            <div class="col">
+                <a onclick="changePage()">
+                    <img src="../assert/edituser.png" class="img-center">
+                    <p class="text-center text-primary">จัดการผู้ใช้</p>
+                </a>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col">
+                <a onclick="changePageCMS()">
+                    <img src="../assert/blackboard.png" class="img-center">
+                    <p class="text-center text-primary">จัดการห้องเรียน</p>
+                </a>
+            </div>
+            <div class="col">
+                <a onclick="changePageCMS()">
+                    <img src="../assert/university.png" class="img-center">
+                    <p class="text-center text-primary">จัดการตึก</p>
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
