@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <script src="../../component/official.js" type="text/javascript"></script>
+    <script src="../../../node_modules/jquery/dist/jquery.js"></script>
+    <script src="../../../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+    <script src="../../../node_modules/axios/dist/axios.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", showData());
+        function showData() {
+            var b = { type: "builds" }
+            axios.get("http://localhost:4001/getdata", b).then((res) => {
+                var a = []
+                a = res.data
+                generate_table_build(a)
+            })
+        }
+
+        function createBuild() {
+            if (checkEmptyBuild()) {
+                var obj = { id: document.getElementById("id").value, nameBuild: document.getElementById("nameBuild").value, areaBuild: document.getElementById("areaBuild").value, facBuild: document.getElementById("facBuild").value, floorBuild: document.getElementById("floorBuild").value }
+                console.log(obj)
+                axios.post("http://localhost:4001/addBuild", obj).then((res) => {
+                    if (res.data.status) {
+                        location.reload();
+                    } else {
+                        alert("อาคารนี้มีอยู่แล้วในระบบ")
+                    }
+                })
+            } else {
+                alert("กรอกข้อมูลให้ครบถ้วน")
+            }
+        }
+
+        function deleteRow(a) {
+            var checkDelete = confirm("ต้องการจะลบข้อมูลนี้จริงๆหรือไม่")
+            var data = { id: a }
+            var b = { type: "builds" }
+            if (checkDelete) {
+                if (a !== "") {
+                    axios.post("http://localhost:4001/delete", { data, b }).then((res) => {
+                        location.reload();
+                    })
+                } else {
+                    alert("กรุณาลองใหม่ภายหลัง")
+                }
+            } else {
+                console.log("cancle")
+            }
+        }
+
+        function edit() {
+            if (checkEmptyBuild()) {
+                var obj = { idBuild: document.getElementById("idBuild").value, nameBuild: document.getElementById("nameBuild").value, areaBuild: document.getElementById("areaBuild").value, facBuild: document.getElementById("facBuild").value, floorBuild: document.getElementById("floorBuild").value }
+                console.log(obj)
+                axios.post("http://localhost:4001/settingBuild", obj).then((res) => {
+                    location.reload();
+                })
+            } else {
+                alert("กรุณาเลือกรายการที่ต้องการแก้ไข้")
+            }
+        }
+    </script>
+
+    <nav class="navbar navbar-light " style="background-color:#007bff;">
+        <h1 class="text-light container">จัดการอาคาร</h1>
+        <form class="form-inline">
+            <a class="btn btn-outline-light my-2 my-sm-0" href="../officialPage.html">Home</a>
+        </form>
+    </nav>
+    <br />
+    <br />
+
+    <div class="container p-3 mb-2 bg-light text-dark">
+        <div class="row">
+            <div class="col">
+                <label>รหัสอาคาร</label>
+                <input type="text" class="form-control" id="id">
+            </div>
+            <div class="col">
+                <label>ชื่ออาคาร</label>
+                <input type="text" class="form-control" id="nameBuild">
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col">
+                <label>พื้นที่อาคาร</label>
+                <input type="text" class="form-control" id="areaBuild">
+            </div>
+            <div class="col">
+                <label>คณะ</label>
+                <input type="text" class="form-control" id="facBuild">
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-1">
+                <label>จำนวนชั้น</label>
+                <input type="text" class="form-control" id="floorBuild">
+            </div>
+        </div>
+        <br>
+        <div class="justify-content-center container">
+            <button type="button" class="btn btn-primary" onclick="edit()">แก้ไข</button>
+            <button type="button" class="btn btn-primary" onclick="clearData()">ยกเลิก</button>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row justify-content-center">
+            <button type="button" class="btn btn-success btn-lg btn-block"
+                onclick="createBuild()">เพิ่มข้อมูลอาคาร</button>
+        </div>
+    </div>
+    <br>
+    <br>
+
+    <div class="container">
+        <div class="row">
+            <table class="table" id="list">
+                <tr>
+                    <th scope="col">รหัสอาคาร</th>
+                    <th scope="col">ชื่ออาคาร</th>
+                    <th scope="col">พื้นที่อาคาร(ตร.ม.)</th>
+                    <th scope="col">คณะ</th>
+                    <th scope="col">จำนวนชั้น</th>
+                    <th scope="col"></th>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+
+
+</body>
+
+</html>
