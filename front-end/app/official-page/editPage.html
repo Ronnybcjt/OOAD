@@ -85,7 +85,7 @@
     <script>
         function showData() {
             var b = { type: "users" }
-            axios.get("http://localhost:4001/getdata", b).then((res) => {
+            axios.post("http://localhost:4001/getdata", b).then((res) => {
                 var a = []
                 a = res.data
                 generate_table(a)
@@ -95,7 +95,7 @@
             if (checkEmpty()) {
                 var obj = { id: document.getElementById("id").value, password: document.getElementById("password").value, user_type: document.getElementById("type").value, sex: document.getElementById("sex").value, name: document.getElementById("name").value, lastname: document.getElementById("lastname").value }
                 console.log(obj)
-                axios.post("http://localhost:4001/adduser", obj).then((res) => {
+                axios.post("http://localhost:4001/add", obj).then((res) => {
                     if (res.data.status) {
                         location.reload();
                     } else {

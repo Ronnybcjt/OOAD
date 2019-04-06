@@ -16,7 +16,7 @@
         document.addEventListener("DOMContentLoaded", showData());
         function showData() {
             var b = { type: "builds" }
-            axios.get("http://localhost:4001/getdata", b).then((res) => {
+            axios.post("http://localhost:4001/getdata", b).then((res) => {
                 var a = []
                 a = res.data
                 generate_table_build(a)
@@ -25,9 +25,10 @@
 
         function createBuild() {
             if (checkEmptyBuild()) {
+                var b = { type: "builds" }
                 var obj = { id: document.getElementById("id").value, nameBuild: document.getElementById("nameBuild").value, areaBuild: document.getElementById("areaBuild").value, facBuild: document.getElementById("facBuild").value, floorBuild: document.getElementById("floorBuild").value }
                 console.log(obj)
-                axios.post("http://localhost:4001/addBuild", obj).then((res) => {
+                axios.post("http://localhost:4001/add", {obj,b}).then((res) => {
                     if (res.data.status) {
                         location.reload();
                     } else {
@@ -42,7 +43,6 @@
         function deleteRow(a) {
             var checkDelete = confirm("ต้องการจะลบข้อมูลนี้จริงๆหรือไม่")
             var data = { id: a }
-            var b = { type: "builds" }
             if (checkDelete) {
                 if (a !== "") {
                     axios.post("http://localhost:4001/delete", { data, b }).then((res) => {
@@ -58,9 +58,10 @@
 
         function edit() {
             if (checkEmptyBuild()) {
-                var obj = { idBuild: document.getElementById("idBuild").value, nameBuild: document.getElementById("nameBuild").value, areaBuild: document.getElementById("areaBuild").value, facBuild: document.getElementById("facBuild").value, floorBuild: document.getElementById("floorBuild").value }
+                var b = {type: "builds"}
+                var obj = { id: document.getElementById("id").value, nameBuild: document.getElementById("nameBuild").value, areaBuild: document.getElementById("areaBuild").value, facBuild: document.getElementById("facBuild").value, floorBuild: document.getElementById("floorBuild").value }
                 console.log(obj)
-                axios.post("http://localhost:4001/settingBuild", obj).then((res) => {
+                axios.post("http://localhost:4001/setting", {obj,b}).then((res) => {
                     location.reload();
                 })
             } else {
@@ -102,7 +103,7 @@
         </div>
         <br>
         <div class="row">
-            <div class="col-1">
+            <div class="col-2">
                 <label>จำนวนชั้น</label>
                 <input type="text" class="form-control" id="floorBuild">
             </div>
