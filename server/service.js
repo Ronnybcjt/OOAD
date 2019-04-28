@@ -33,15 +33,15 @@ app.post('/setting', (req, res) => {
     if (type === 'users') {
       const db = client.db(dbName)
       const dataUpdate = {
-        id: req.body.id,
-        password: req.body.password,
-        user_type: req.body.user_type,
-        sex: req.body.sex,
-        name: req.body.name,
-        lastname: req.body.lastname
+        id: req.body.obj.id,
+        password: req.body.obj.password,
+        user_type: req.body.obj.user_type,
+        sex: req.body.obj.sex,
+        name: req.body.obj.name,
+        lastname: req.body.obj.lastname
       }
-
-      db.collection(type).update({ id: req.body.id }, dataUpdate, function (err, result) {
+      console.log("check")
+      db.collection(type).update({ id: req.body.obj.id }, dataUpdate, function (err, result) {
         if (err) throw err
         res.json({ status: true })
         client.close()
@@ -54,6 +54,35 @@ app.post('/setting', (req, res) => {
         areaBuild: req.body.obj.areaBuild,
         facBuild: req.body.obj.facBuild,
         floorBuild: req.body.obj.floorBuild
+      }
+      console.log(dataUpdate)``
+      db.collection(type).update({ id: req.body.obj.id }, dataUpdate, function (err, result) {
+        if (err) throw err
+        res.json({ status: true })
+        client.close()
+      })
+    } else if (type === 'subjects') {
+      const db = client.db(dbName)
+      const dataUpdate = {
+        id: req.body.obj.id,
+        className: req.body.obj.className,
+        credit: req.body.obj.credit,
+        faculty: req.body.obj.faculty
+      }
+      console.log(dataUpdate)
+      db.collection(type).update({ id: req.body.obj.id }, dataUpdate, function (err, result) {
+        if (err) throw err
+        res.json({ status: true })
+        client.close()
+      })
+    } else if (type === 'rooms') {
+      const db = client.db(dbName)
+      const dataUpdate = {
+        id: req.body.obj.id,
+        build: req.body.obj.build,
+        floor: req.body.obj.floor,
+        faculty: req.body.obj.faculty,
+        seat: req.body.obj.seat
       }
       console.log(dataUpdate)
       db.collection(type).update({ id: req.body.obj.id }, dataUpdate, function (err, result) {
@@ -140,6 +169,45 @@ app.post('/add', (req, res) => {
             areaBuild: req.body.obj.areaBuild,
             facBuild: req.body.obj.facBuild,
             floorBuild: req.body.obj.floorBuild
+          }
+          db.collection(type).insertOne(newUser, (err, result) => {
+            if (err) throw err
+            client.close()
+            res.json({ status: true })
+          })
+        } else {
+          res.json({ status: false })
+          client.close()
+        }
+      })
+    } else if (type === 'subjects') {
+      db.collection(type).findOne({ id: req.body.obj.id }, (_err, result) => {
+        if (result === null) {
+          const newUser = {
+            id: req.body.obj.id,
+            className: req.body.obj.className,
+            credit: req.body.obj.credit,
+            faculty: req.body.obj.faculty
+          }
+          db.collection(type).insertOne(newUser, (err, result) => {
+            if (err) throw err
+            client.close()
+            res.json({ status: true })
+          })
+        } else {
+          res.json({ status: false })
+          client.close()
+        }
+      })
+    } else if (type === 'rooms') {
+      db.collection(type).findOne({ id: req.body.obj.id }, (_err, result) => {
+        if (result === null) {
+          const newUser = {
+            id: req.body.obj.id,
+            build: req.body.obj.build,
+            floor: req.body.obj.floor,
+            faculty: req.body.obj.faculty,
+            seat: req.body.obj.seat
           }
           db.collection(type).insertOne(newUser, (err, result) => {
             if (err) throw err
