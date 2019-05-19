@@ -65,7 +65,52 @@ function generate_table_build (a) {
     areaBuild.innerHTML = a.data[i].areaBuild
     facBuild.innerHTML = a.data[i].facBuild
     floorBuild.innerHTML = a.data[i].floorBuild
-    crud.innerHTML = `<button data-toggle="modal" data-target="#editUser" onclick="selectBuild(this)" class="btn btn-success">Edit</button> <button onclick="deleteData(this)" class="btn btn-danger">Delete</button>`
+    crud.innerHTML = `<button data-toggle="modal" data-target="#editBuild" onclick="selectBuild(this)" class="btn btn-success">Edit</button> <button onclick="deleteData(this)" class="btn btn-danger">Delete</button>`
+  }
+}
+
+function generate_table_subjects (a) {
+  var table = document.getElementById('list')
+  console.log(a)
+  console.log('check length ' + a.data.length)
+  for (var i = 0; i < a.data.length; i++) {
+    console.log('loop pass')
+    var newRow = table.insertRow(1)
+
+    var id = newRow.insertCell(0)
+    var className = newRow.insertCell(1)
+    var credit = newRow.insertCell(2)
+    var faculty = newRow.insertCell(3)
+    var crud = newRow.insertCell(4)
+
+    id.innerHTML = a.data[i].id
+    className.innerHTML = a.data[i].className
+    credit.innerHTML = a.data[i].credit
+    faculty.innerHTML = a.data[i].faculty
+    crud.innerHTML = `<button data-toggle="modal" data-target="#editClassModal" onclick="selectSubject(this)" class="btn btn-success">Edit</button> <button onclick="deleteData(this)" class="btn btn-danger">Delete</button>`
+  }
+}
+function generate_table_rooms (a) {
+  var table = document.getElementById('list')
+  console.log(a)
+  console.log('check length ' + a.data.length)
+  for (var i = 0; i < a.data.length; i++) {
+    console.log('loop pass')
+    var newRow = table.insertRow(1)
+
+    var id = newRow.insertCell(0)
+    var build = newRow.insertCell(1)
+    var floor = newRow.insertCell(2)
+    var faculty = newRow.insertCell(3)
+    var seat = newRow.insertCell(4)
+    var crud = newRow.insertCell(5)
+
+    id.innerHTML = a.data[i].id
+    build.innerHTML = a.data[i].build
+    floor.innerHTML = a.data[i].floor
+    faculty.innerHTML = a.data[i].faculty
+    seat.innerHTML = a.data[i].seat
+    crud.innerHTML = `<button data-toggle="modal" data-target="#editRoomModal" onclick="selectRoom(this)" class="btn btn-success">Edit</button> <button onclick="deleteData(this)" class="btn btn-danger">Delete</button>`
   }
 }
 
@@ -96,13 +141,6 @@ function deleteData (td) {
   deleteRow(obj)
 }
 
-function deleteDataBuild (td) {
-  selectedRow = td.parentElement.parentElement
-  var obj = selectedRow.cells[0].innerHTML
-  console.log('delete data ' + obj)
-  deleteRow(obj)
-}
-
 function checkEmpty () {
   if (document.getElementById('id').value !== '') {
     if (document.getElementById('password').value !== '') {
@@ -110,6 +148,33 @@ function checkEmpty () {
         if (document.getElementById('sex').value !== '') {
           if (document.getElementById('name').value !== '') {
             if (document.getElementById('lastname').value !== '') {
+              return true
+            } else {
+              return false
+            }
+          } else {
+            return false
+          }
+        } else {
+          return false
+        }
+      } else {
+        return false
+      }
+    } else {
+      return false
+    }
+  } else {
+    return false
+  }
+}
+function checkEmptyEdit () {
+  if (document.getElementById('id-1').value !== '') {
+    if (document.getElementById('password-1').value !== '') {
+      if (document.getElementById('type-1').value !== '') {
+        if (document.getElementById('sex-1').value !== '') {
+          if (document.getElementById('name-1').value !== '') {
+            if (document.getElementById('lastname-1').value !== '') {
               return true
             } else {
               return false
@@ -155,13 +220,202 @@ function checkEmptyBuild () {
   }
 }
 
+function checkEmptySubject () {
+  if (document.getElementById('id').value !== '') {
+    if (document.getElementById('className').value !== '') {
+      if (document.getElementById('credit').value !== '') {
+        if (document.getElementById('faculty').value !== '') {
+          return true
+        } else {
+          return false
+        }
+      } else {
+        return false
+      }
+    } else {
+      return false
+    }
+  } else {
+    return false
+  }
+}
+
+function roomBuild (a) {
+  var select = document.getElementById('selectBuild')
+
+  for (var i = 0; i < a.data.length; i++) {
+    var opt = a.data[i].id
+    var el = document.createElement('option')
+    el.textContent = opt
+    el.value = opt
+    select.appendChild(el)
+  }
+  roomBuild2(a)
+}
+
+function roomBuild2 (a) {
+  var select = document.getElementById('selectBuild-1')
+
+  for (var i = 0; i < a.data.length; i++) {
+    var opt = a.data[i].id
+    var el = document.createElement('option')
+    el.textContent = opt
+    el.value = opt
+    select.appendChild(el)
+  }
+}
+
+function classSubject (a) {
+  var select = document.getElementById('className')
+
+  for (var i = 0; i < a.data.length; i++) {
+    var opt = a.data[i].className
+    var el = document.createElement('option')
+    el.textContent = opt
+    el.value = opt
+    select.appendChild(el)
+  }
+  classSubject2(a)
+}
+
+function classSubject2 (a) {
+  // var select = document.getElementById('className-1')
+
+  // for (var i = 0; i < a.data.length; i++) {
+  //   var opt = a.data[i].className
+  //   var el = document.createElement('option')
+  //   el.textContent = opt
+  //   el.value = opt
+  //   select.appendChild(el)
+  // }
+}
+
+function teacher (a) {
+  var select = document.getElementById('teacherName')
+
+  for (var i = 0; i < a.data.length; i++) {
+    if (a.data[i].user_type === 'อาจารย์') {
+      var opt = a.data[i].name + ' ' + a.data[i].lastname
+      var el = document.createElement('option')
+      el.textContent = opt
+      el.value = opt
+      select.appendChild(el)
+    }
+  }
+  teacher2(a)
+}
+
+function teacher2 (a) {
+  // var select = document.getElementById('className-1')
+
+  // for (var i = 0; i < a.data.length; i++) {
+  //   var opt = a.data[i].className
+  //   var el = document.createElement('option')
+  //   el.textContent = opt
+  //   el.value = opt
+  //   select.appendChild(el)
+  // }
+}
+
+function checkEmptyRoom () {
+  if (document.getElementById('id').value !== '') {
+    if (document.getElementById('selectBuild').value !== '') {
+      if (document.getElementById('floor').value !== '') {
+        if (document.getElementById('faculty').value !== '') {
+          if (document.getElementById('seat').value !== '') {
+            return true
+          } else {
+            return false
+          }
+        } else {
+          return false
+        }
+      } else {
+        return false
+      }
+    } else {
+      return false
+    }
+  } else {
+    return false
+  }
+}
+
+function checkEmptySubjectEdit () {
+  if (document.getElementById('id-1').value !== '') {
+    if (document.getElementById('className-1').value !== '') {
+      if (document.getElementById('credit-1').value !== '') {
+        if (document.getElementById('faculty-1').value !== '') {
+          return true
+        } else {
+          return false
+        }
+      } else {
+        return false
+      }
+    } else {
+      return false
+    }
+  } else {
+    return false
+  }
+}
+
+function checkEmptyRoomEdit () {
+  if (document.getElementById('id-1').value !== '') {
+    if (document.getElementById('selectBuild-1').value !== '') {
+      if (document.getElementById('floor-1').value !== '') {
+        if (document.getElementById('faculty-1').value !== '') {
+          if (document.getElementById('seat-1').value !== '') {
+            return true
+          } else {
+            return false
+          }
+        } else {
+          return false
+        }
+      } else {
+        return false
+      }
+    } else {
+      return false
+    }
+  } else {
+    return false
+  }
+}
+
+function checkEmptyBuildEdit () {
+  if (document.getElementById('id-1').value !== '') {
+    if (document.getElementById('nameBuild-1').value !== '') {
+      if (document.getElementById('areaBuild-1').value !== '') {
+        if (document.getElementById('facBuild-1').value !== '') {
+          if (document.getElementById('floorBuild-1').value !== '') {
+            return true
+          } else {
+            return false
+          }
+        } else {
+          return false
+        }
+      } else {
+        return false
+      }
+    } else {
+      return false
+    }
+  } else {
+    return false
+  }
+}
+
 function selectBuild (td) {
   selectedRow = td.parentElement.parentElement
-  document.getElementById('id').value = selectedRow.cells[0].innerHTML
-  document.getElementById('nameBuild').value = selectedRow.cells[1].innerHTML
-  document.getElementById('areaBuild').value = selectedRow.cells[2].innerHTML
-  document.getElementById('facBuild').value = selectedRow.cells[3].innerHTML
-  document.getElementById('floorBuild').value = selectedRow.cells[4].innerHTML
+  document.getElementById('id-1').value = selectedRow.cells[0].innerHTML
+  document.getElementById('nameBuild-1').value = selectedRow.cells[1].innerHTML
+  document.getElementById('areaBuild-1').value = selectedRow.cells[2].innerHTML
+  document.getElementById('facBuild-1').value = selectedRow.cells[3].innerHTML
+  document.getElementById('floorBuild-1').value = selectedRow.cells[4].innerHTML
 }
 
 function clearBuild () {
@@ -170,4 +424,20 @@ function clearBuild () {
   document.getElementById('areaBuild').value = ''
   document.getElementById('facBuild').value = ''
   document.getElementById('floorBuild').value = ''
+}
+
+function selectSubject (td) {
+  selectedRow = td.parentElement.parentElement
+  document.getElementById('id-1').value = selectedRow.cells[0].innerHTML
+  document.getElementById('className-1').value = selectedRow.cells[1].innerHTML
+  document.getElementById('credit-1').value = selectedRow.cells[2].innerHTML
+  document.getElementById('faculty-1').value = selectedRow.cells[3].innerHTML
+}
+function selectRoom (td) {
+  selectedRow = td.parentElement.parentElement
+  document.getElementById('id-1').value = selectedRow.cells[0].innerHTML
+  document.getElementById('selectBuild-1').value = selectedRow.cells[1].innerHTML
+  document.getElementById('floor-1').value = selectedRow.cells[2].innerHTML
+  document.getElementById('faculty-1').value = selectedRow.cells[3].innerHTML
+  document.getElementById('seat-1').value = selectedRow.cells[4].innerHTML
 }

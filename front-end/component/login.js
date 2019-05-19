@@ -22,10 +22,8 @@ function changePage (a) {
   if (a === 'เจ้าหน้าที่') {
     document.location.href = './officialPage.html'
   } else if (a === 'นิสิต') {
-    alert('Comming soon')
+    document.location.href = './studentPage.html'
   } else if (a === 'อาจารย์') {
-    alert('Comming soon')
-  } else {
-    alert('Comming soon')
+    document.location.href = './teacherPage.html'
   }
 }

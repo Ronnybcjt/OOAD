@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    
+    <script src="../../node_modules/jquery/dist/jquery.js"></script>
+    <script src="../../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <style>
+        .center {
+            margin: auto;
+            width: 50%;
+            padding: 10px;
+        }
+
+        .custom-select {
+            position: relative;
+            font-family: Arial;
+        }
+
+        .custom-select select {
+            display: none;
+
+        }
+
+        .select-selected {
+            background-color: DodgerBlue;
+        }
+
+
+        .select-selected:after {
+            position: absolute;
+            content: "";
+            top: 14px;
+            right: 10px;
+            width: 0;
+            height: 0;
+            border: 6px solid transparent;
+            border-color: #fff transparent transparent transparent;
+        }
+
+
+        .select-selected.select-arrow-active:after {
+            border-color: transparent transparent #fff transparent;
+            top: 7px;
+        }
+
+
+        .select-items div,
+        .select-selected {
+            color: #ffffff;
+            padding: 8px 16px;
+            border: 1px solid transparent;
+            border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+            cursor: pointer;
+            user-select: none;
+        }
+
+
+        .select-items {
+            position: absolute;
+            background-color: DodgerBlue;
+            top: 100%;
+            left: 0;
+            right: 0;
+            z-index: 99;
+        }
+
+
+        .select-hide {
+            display: none;
+        }
+
+        .select-items div:hover,
+        .same-as-selected {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+  
+    <nav class="navbar navbar-light " style="background-color:#007bff;">
+        <h1 class="text-light container">OOAD</h1>
+        <form class="form-inline">
+            <a class="btn btn-outline-light my-2 my-sm-0" href="officialPage.html">Home</a>
+        </form>
+    </nav>
+    <br />
+    <br />
+    <center><h1>จัดการการสอบ</h1></center>
+    
+    <div class="row container flex-row-reverse">
+        
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addExamModal">
+                    เพิ่มการสอบ
+                  </button>
+        </div>
+        <br />
+   
+          
+          <!-- Modal -->
+          <div class="modal fade" id="addExamModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">เพิ่มการสอบ</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                        <div class="container p-3 mb-2 text-dark">
+                                <div class="row">
+                                    <div class="col">
+                                        <label>รหัสวิชา</label>
+                                        <select class="custom-select" id="classId">
+                                                <option value="88624459-59">88624459-59</option>
+                                                <option value="88624559-59">88624559-59</option>
+                                               
+                                            </select>
+                                    </div>
+                                    <div class="col">
+                                        <label>ชื่อวิชา</label>
+                                        <select class="custom-select" id="className">
+                                                <option value="Object-Oriented Analysis and Design">Object-Oriented Analysis and Design</option>
+                                                <option value="	Software Testing">	Software Testing</option>
+                                                
+                                            </select>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col">
+                                        <label>ห้องสอบ</label>
+                                        <select class="custom-select" id="room">
+                                            <option value="IF-4M210 ">IF-4M210 </option>
+                                            <option value="IF-11M280 ">IF-11M280 </option>
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        <label>ประเภท</label>
+                                        <select class="custom-select" id="type">
+                                            <option value="Lecture">Lecture</option>
+                                            <option value="Lab">Lab</option>
+                                            
+                                        </select>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col">
+                                        <label>วัน - เวลา</label>
+                                        <select class="custom-select" id="dateTime">
+                                                <option value="IF">13.00 - 16.00</option>
+                                                <option value="SD">9.00 - 12.00</option>
+                                                
+                                            </select>
+                                    </div>
+                                    <div class="col">
+                                        <label>ผู้คุมสอบ</label>
+                                        <select class="custom-select" id="examiner">
+                                                <option value="Kob">Kob</option>
+                                                <option value="Jo">Jo</option>
+                                                <option value="John">John</option>
+                                                
+                                            </select>
+                                    </div>
+                                    
+                                </div>
+                                <br>
+                                <div class="row">
+                                        <div class="col">
+                                            <label>ตึก</label>
+                                            <select class="custom-select" id="building">
+                                                    <option value="IF">IF</option>
+                                                    <option value="SD">SD</option>
+                                                    
+                                                </select>
+                                        </div>
+                                        
+                                    </div>
+                            </div>
+                  
+                </div>
+                <div class="modal-footer">
+                  
+                  <button type="button" class="btn btn-primary">เพิ่มการสอบ</button>
+                  <button type="button" class="btn btn-warning">ล้าง</button>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+    
+    <div class="container">
+            <div class="row">
+                    <div class="col"><label>เทอม/ปี</label></div>
+                        
+                        
+                    </div>
+        <div class="row">
+            <table class="table" id="list">
+                <tr>
+                    <th scope="col">รหัสวิชา</th>
+                    <th scope="col">ชื่อวิชา</th>
+                    <th scope="col">ห้องสอบ</th>
+                    <th scope="col">ประเภท</th>
+                    <th scope="col">วัน - เวลา</th>
+                    <th scope="col">ผู้คุมสอบ</th>
+                    <th scope="col">ตึก</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

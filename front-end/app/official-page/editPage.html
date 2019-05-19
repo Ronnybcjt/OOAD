@@ -84,18 +84,19 @@
     <script src="../../../node_modules/axios/dist/axios.min.js"></script>
     <script>
         function showData() {
-            var b = { type: "users" }
-            axios.post("http://localhost:4001/getdata", b).then((res) => {
+            axios.get("http://localhost:4001/getdata" ).then((res) => {
                 var a = []
+                console.log(res.data)
                 a = res.data
                 generate_table(a)
             })
         }
         function createUser() {
             if (checkEmpty()) {
+                var b = { type: "users" }
                 var obj = { id: document.getElementById("id").value, password: document.getElementById("password").value, user_type: document.getElementById("type").value, sex: document.getElementById("sex").value, name: document.getElementById("name").value, lastname: document.getElementById("lastname").value }
                 console.log(obj)
-                axios.post("http://localhost:4001/add", obj).then((res) => {
+                axios.post("http://localhost:4001/add", {obj,b}).then((res) => {
                     if (res.data.status) {
                         location.reload();
                     } else {
@@ -108,10 +109,11 @@
         }
 
         function edit() {
-            if (checkEmpty()) {
-                var obj = { id: document.getElementById("id").value, password: document.getElementById("password").value, user_type: document.getElementById("type").value, sex: document.getElementById("sex").value, name: document.getElementById("name").value, lastname: document.getElementById("lastname").value }
+            if (checkEmptyEdit()) {
+                var b = { type: "users" }
+                var obj = { id: document.getElementById("id-1").value, password: document.getElementById("password-1").value, user_type: document.getElementById("type-1").value, sex: document.getElementById("sex-1").value, name: document.getElementById("name-1").value, lastname: document.getElementById("lastname-1").value }
                 console.log(obj)
-                axios.post("http://localhost:4001/settinguser", obj).then((res) => {
+                axios.post("http://localhost:4001/setting", {obj,b}).then((res) => {
                     location.reload();
                 })
             } else {
@@ -120,11 +122,11 @@
         }
         function deleteRow(a) {
             var checkDelete = confirm("ต้องการจะลบข้อมูลนี้จริงๆหรือไม่")
-            var data = { id: a }
+            var obj = { id: a }
             var b = { type: "users" }
             if (checkDelete) {
                 if (a !== "") {
-                    axios.post("http://localhost:4001/delete", { data, b }).then((res) => {
+                    axios.post("http://localhost:4001/delete", { obj, b }).then((res) => {
                         location.reload();
                     })
                 } else {
@@ -144,10 +146,16 @@
     </nav>
     <br />
     <br />
+    <center>
+        <h1>รายชื่อผู้ใช้งาน
+        </h1>
+    </center>
+    <br>
     <div class="row container flex-row-reverse">
         <button class="btn btn-success" data-toggle="modal" data-target="#addUser">เพิ่มข้อมูลผู้ใช้</button>
     </div>
     <br />
+
     <div class="modal fade" id="addUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -212,7 +220,7 @@
                         onclick="clearData()">ล้าง</button>
                     <button type="button" class="btn btn-secondary" onclick="clearData()"
                         data-dismiss="modal">ยกเลิก</button>
-                    
+
                 </div>
             </div>
         </div>

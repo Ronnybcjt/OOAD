@@ -15,8 +15,7 @@
     <script>
         document.addEventListener("DOMContentLoaded", showData());
         function showData() {
-            var b = { type: "builds" }
-            axios.post("http://localhost:4001/getdata", b).then((res) => {
+            axios.get("http://localhost:4001/getBuilds").then((res) => {
                 var a = []
                 a = res.data
                 generate_table_build(a)
@@ -28,7 +27,7 @@
                 var b = { type: "builds" }
                 var obj = { id: document.getElementById("id").value, nameBuild: document.getElementById("nameBuild").value, areaBuild: document.getElementById("areaBuild").value, facBuild: document.getElementById("facBuild").value, floorBuild: document.getElementById("floorBuild").value }
                 console.log(obj)
-                axios.post("http://localhost:4001/add", {obj,b}).then((res) => {
+                axios.post("http://localhost:4001/addBuilds", { obj, b }).then((res) => {
                     if (res.data.status) {
                         location.reload();
                     } else {
@@ -42,10 +41,11 @@
 
         function deleteRow(a) {
             var checkDelete = confirm("ต้องการจะลบข้อมูลนี้จริงๆหรือไม่")
-            var data = { id: a }
+            var b = { type: "builds" }
+            var obj = { id: a }
             if (checkDelete) {
                 if (a !== "") {
-                    axios.post("http://localhost:4001/delete", { data, b }).then((res) => {
+                    axios.post("http://localhost:4001/deleteBuilds", { obj, b }).then((res) => {
                         location.reload();
                     })
                 } else {
@@ -57,11 +57,11 @@
         }
 
         function edit() {
-            if (checkEmptyBuild()) {
-                var b = {type: "builds"}
-                var obj = { id: document.getElementById("id").value, nameBuild: document.getElementById("nameBuild").value, areaBuild: document.getElementById("areaBuild").value, facBuild: document.getElementById("facBuild").value, floorBuild: document.getElementById("floorBuild").value }
+            if (checkEmptyBuildEdit()) {
+                var b = { type: "builds" }
+                var obj = { id: document.getElementById("id-1").value, nameBuild: document.getElementById("nameBuild-1").value, areaBuild: document.getElementById("areaBuild-1").value, facBuild: document.getElementById("facBuild-1").value, floorBuild: document.getElementById("floorBuild-1").value }
                 console.log(obj)
-                axios.post("http://localhost:4001/setting", {obj,b}).then((res) => {
+                axios.post("http://localhost:4001/settingBuilds", { obj, b }).then((res) => {
                     location.reload();
                 })
             } else {
@@ -78,50 +78,122 @@
     </nav>
     <br />
     <br />
+    <center>
+        <h1>รายชื่อตึก</h1>
+    </center>
+    <br>
+    <div class="row container flex-row-reverse">
+        <button class="btn btn-success" data-toggle="modal" data-target="#addBuild">เพิ่มข้อมูลผู้ใช้</button>
+    </div>
+    <br />
+    <div class="modal fade" id="addBuild" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">จัดการอาคาร</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container p-3 mb-2 bg-light text-dark">
+                        <div class="row">
+                            <div class="col">
+                                <label>รหัสอาคาร</label>
+                                <input type="text" class="form-control" id="id">
+                            </div>
+                            <div class="col">
+                                <label>ชื่ออาคาร</label>
+                                <input type="text" class="form-control" id="nameBuild">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col">
+                                <label>พื้นที่อาคาร</label>
+                                <input type="text" class="form-control" id="areaBuild">
+                            </div>
+                            <div class="col">
+                                <label>คณะ</label>
+                                <input type="text" class="form-control" id="facBuild">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-2">
+                                <label>จำนวนชั้น</label>
+                                <input type="text" class="form-control" id="floorBuild">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
 
-    <div class="container p-3 mb-2 bg-light text-dark">
-        <div class="row">
-            <div class="col">
-                <label>รหัสอาคาร</label>
-                <input type="text" class="form-control" id="id">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="createBuild()">เพิ่มข้อมูล</button>
+                    <button type="button" class="btn btn-warning" onclick="clearData()"
+                        onclick="clearData()">ล้าง</button>
+                    <button type="button" class="btn btn-secondary" onclick="clearData()"
+                        data-dismiss="modal">ยกเลิก</button>
+
+                </div>
             </div>
-            <div class="col">
-                <label>ชื่ออาคาร</label>
-                <input type="text" class="form-control" id="nameBuild">
-            </div>
-        </div>
-        <br>
-        <div class="row">
-            <div class="col">
-                <label>พื้นที่อาคาร</label>
-                <input type="text" class="form-control" id="areaBuild">
-            </div>
-            <div class="col">
-                <label>คณะ</label>
-                <input type="text" class="form-control" id="facBuild">
-            </div>
-        </div>
-        <br>
-        <div class="row">
-            <div class="col-2">
-                <label>จำนวนชั้น</label>
-                <input type="text" class="form-control" id="floorBuild">
-            </div>
-        </div>
-        <br>
-        <div class="justify-content-center container">
-            <button type="button" class="btn btn-primary" onclick="edit()">แก้ไข</button>
-            <button type="button" class="btn btn-primary" onclick="clearData()">ยกเลิก</button>
         </div>
     </div>
-    <br>
-    <div class="container">
-        <div class="row justify-content-center">
-            <button type="button" class="btn btn-success btn-lg btn-block"
-                onclick="createBuild()">เพิ่มข้อมูลอาคาร</button>
+    <div class="modal fade" id="editBuild" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">แก้ไขข้อมูล</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container p-3 mb-2 bg-light text-dark">
+                        <div class="row">
+                            <div class="col">
+                                <label>รหัสอาคาร</label>
+                                <input type="text" class="form-control" id="id-1">
+                            </div>
+                            <div class="col">
+                                <label>ชื่ออาคาร</label>
+                                <input type="text" class="form-control" id="nameBuild-1">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col">
+                                <label>พื้นที่อาคาร</label>
+                                <input type="text" class="form-control" id="areaBuild-1">
+                            </div>
+                            <div class="col">
+                                <label>คณะ</label>
+                                <input type="text" class="form-control" id="facBuild-1">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-2">
+                                <label>จำนวนชั้น</label>
+                                <input type="text" class="form-control" id="floorBuild-1">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                    <button type="button" class="btn btn-primary" onclick="edit()">ยืนยัน</button>
+                </div>
+            </div>
         </div>
     </div>
-    <br>
     <br>
 
     <div class="container">
