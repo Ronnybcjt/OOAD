@@ -93,7 +93,7 @@
         var dataSubjects
         var totalClass = 0
         var subjectsID
-
+        var flag = true
         document.addEventListener("DOMContentLoaded", getSubject(), getTeacher(),showData(),showDataYear());
 
         function showDataYear() {
@@ -125,6 +125,23 @@
                 teacher(a)
             })
         }
+        function checkEmpty(){
+            console.log(document.getElementById("section").value)
+            if(document.getElementById("section").value == ""){
+                //alert("กรุณาใส่เลขกลุ่ม")
+                flag = false
+            }
+            
+            if(teacherName.length === 0){
+                //alert("กรุณาเลือกอาจารย์ผู้สอน")
+                flag = false
+            }
+            if(studentName == null){
+                //alert("กรุณาเลือกไฟล์ Excel")
+                flag = false
+            }
+            return flag;
+        }
 
         function showData() {
             axios.get("http://localhost:4001/getClass").then((res) => {
@@ -137,6 +154,7 @@
                 a = res.data
                 generate_table_class(a)
             })
+            
         }
 
         function deleteRow(a) {
@@ -152,8 +170,8 @@
         }
 
         function addClass() {
-
-            var obj = {
+            if(checkEmpty()){
+                var obj = {
                 className: document.getElementById("className").value+" กลุ่ม"+document.getElementById("section").value,
                 classID: subjectsID,
                 teacher: teacherName,
@@ -161,6 +179,7 @@
                 student: studentName
             }
             console.log(obj)
+           
 
             axios.post("http://localhost:4001/addClass", { obj }).then((res) => {
                 if (res.data.status) {
@@ -169,6 +188,12 @@
                     alert("มีวิชานี้มีอยู่แล้วในระบบ")
                 }
             })
+            flag = true;
+            }else{
+                alert("กรุณากรอกข้อมูลให้ครบถ้วน")
+                flag = true;
+            }
+            
         }
 
         function removeTag(e) {
@@ -345,7 +370,7 @@
                         <div class="row">
                             <div class="col">
                                 <label>รหัสวิชา</label>
-                                <input class="form-control" id="classID">
+                                <input class="form-control" id="classID" disabled>
                             </div>
                         </div>
                         <br>
@@ -376,7 +401,7 @@
                             </div>
                         </div>
                         <label>กลุ่ม</label>
-                        <input type="text" class="form-control" id="section">
+                        <input type="text" class="form-control" id ="section" >
                         <br>
                         <div class="row">
                             <div class="col">

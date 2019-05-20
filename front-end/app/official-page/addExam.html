@@ -90,6 +90,7 @@
         var dataSubjects
         var group
         var selectClassID
+        var flag = true
 
         document.addEventListener("DOMContentLoaded", getClass(), getTeacher(), getRooms(), getBuilds(),showData(),showDataYear());
         
@@ -100,6 +101,21 @@
                 document.getElementById("Show").innerHTML = a.data[0].year
             })
         }
+
+        function Teacher_and_Exam(a) {
+  var select = document.getElementById('teacherName')
+
+  for (var i = 0; i < a.data.length; i++) {
+    if (a.data[i].user_type === 'อาจารย์' || a.data[i].user_type  === 'คนคุมสอบ') {
+      var opt = a.data[i].name + ' ' + a.data[i].lastname
+      var el = document.createElement('option')
+      el.textContent = opt
+      el.value = opt
+      select.appendChild(el)
+    }
+  }
+  teacher2(a)
+}
         
         function getSubject() {
             var b = { type: "subjects" }
@@ -117,7 +133,7 @@
                 var a = []
                 a = res.data
                 console.log(a)
-                teacher(a)
+                Teacher_and_Exam(a)
             })
         }
 
@@ -150,9 +166,36 @@
                 classSubject(a)
             })
         }
+        function checkEmpty(){
+            console.log(document.getElementById("section").value)
+            if(document.getElementById("section").value == ""){
+                //alert("กรุณาใส่เลขกลุ่ม")
+                flag = false
+            }
+            if(document.getElementById("date").value == ""){
+                //alert("กรุณาใส่วันที่สอบ")
+                flag = false
+            }
+            if(document.getElementById("time1").value == ""){
+                //alert("กรุณาใส่เวลาเริ่มสอบ")
+                flag = false
+            }
+            if(document.getElementById("time2").value == ""){
+                //alert("กรุณาใส่เวลาที่จบการสอบ")
+                flag = false
+            }
+            
+            if(teacherName.length === 0){
+                //alert("กรุณาเลือกผู้คุมสอบ")
+                flag = false
+            }
+            
+            return flag;
+        }
 
         function addExam() {
-            var obj = { 
+            if(checkEmpty()){
+                var obj = { 
                 className: document.getElementById("className").value, 
                 classID: selectClassID, 
                 examiner: teacherName, 
@@ -171,6 +214,15 @@
                     alert("มีวิชานี้มีอยู่แล้วในระบบ")
                 }
             })
+
+            flag=true;
+
+            }
+            else{
+                alert("กรุณากรอกข้อมูลให้ครบถ้วน")
+                flag = true;
+            }
+            
         }
 
         function showData() {
@@ -179,6 +231,7 @@
                 a = res.data
                 generate_table_exam(a)
             })
+            
         }
         function deleteRow(a) {
             var b = { type: "rooms" }
@@ -330,7 +383,7 @@
                             </div>
                             <div class="col">
                                 <label>รหัสวิชา</label>
-                                <input class="form-control" id="classID">
+                                <input class="form-control" id="classID" disabled>
                             </div>
                         </div>
                         <br>
@@ -379,11 +432,13 @@
 
                                 </select>
                             </div>
+
                             <div class="col">
 
                                 <label>กลุ่ม</label>
                                 <input type="text" class="form-control" id="section">
                             </div>
+                            
                         </div>
                         <br>
                         <div class="row">
