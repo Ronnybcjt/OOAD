@@ -7,7 +7,7 @@ module.exports = (app) => {
 
     app.get('/getdata', users.findAll);
 
-   app.post('/delete', users.delete);
+    app.post('/delete', users.delete);
 
     app.post('/add', users.insert);
 
