@@ -37,6 +37,10 @@ require('./routes/users.routes')(app);
 require('./routes/builds.routes')(app);
 require('./routes/subjects.routes')(app);
 require('./routes/rooms.routes')(app);
+require('./routes/classes.routes')(app);
+require('./routes/exams.routes')(app);
+require('./routes/years.routes')(app);
+
 
 app.listen(4001, () => {
   console.log("Server is listening on port 4001");

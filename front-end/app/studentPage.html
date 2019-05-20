@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <script src="../component/official.js" type="text/javascript"></script>
+    <script src="../component/student.js" type="text/javascript"></script>
     <style>
         html,
         body {
@@ -26,95 +26,72 @@
 </head>
 
 <body>
+    <script src="../../node_modules/axios/dist/axios.min.js"></script>
+    <script>
+        var allClass
+        var allExam
+        document.addEventListener("DOMContentLoaded", checkName(),showDataYear());
+        function checkName(){
+            axios.get("http://localhost:4001/getExams").then((res) => {
+                var a = []
+                a = res.data
+                allExam = a
+                checkClass()
+            })
+        }
+
+        function showDataYear() {
+            axios.get("http://localhost:4001/getYear" ).then((res) => {
+                var a = res.data
+                console.log(a.data[0].year)
+                document.getElementById("Show").innerHTML = a.data[0].year
+            })
+        }
+
+        function checkClass(){
+            axios.get("http://localhost:4001/getClass").then((res) => {
+                var a = []
+                a = res.data
+                allClass = a
+                getClass(a)
+            })
+        }
+        function getClass(a){
+            console.log("going to checkUserName")
+            checkUserName(allExam,allClass)
+        }
+    </script>
     <nav class="navbar navbar-dark bg-primary">
         <h1 class="text-light">
             OOAD
         </h1>
     </nav>
+    <br>
+    <br>
     <div class="container">
-        <br>
-        <br>
-        <br>
-        <div class="row container">
-            <h3>
-                เมนูสำหรับนิสิต
-            </h3>
-        </div>
-        <br>
-        <div class="row">
-            <div class="col">
-                <div class="card border-0">
-                    <a onclick="changePageCMS()"><img src="../assert/account.png" height="75"
-                            width="75"></a>
-                    <label>
-                        บัญชีผู้ใช้งาน
-                    </label>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card border-0">
-                    <a onclick="changePageCMS()">
-                        <img src="../assert/open-book.png" height="75" width="75">
-                    </a>
-                    <label>
-                        ตารางสอน
-                    </label>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card border-0">
-                    <a onclick="changePageCMS()">
-                        <img src="../assert/test.png" height="75" width="75">
-                    </a>
-                    <label>
-                        ตารางสอบ
-                    </label>
-                </div>
-            </div>
-
-        </div>
-
-        <br>
-        <br>
-        <br>
-
-        <div class="row">
-            <div class="col">
-                <div class="card border-0">
-                    <a onclick="changePageCMS()">
-                        <img src="../assert/student.png" height="75" width="75">
-                    </a>
-                    <label>
-                        ผลการศึกษา
-                    </label>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card border-0">
-                    <a onclick="changePageCMS()">
-                        <img src="../assert/schedule.png" height="75" width="75">
-                    </a>
-                    <label>
-                        ปฏิทินการศึกษา
-                    </label>
-                </div>
-            </div>
-
-            <div class="col">
-                <div class="card border-0">
-                    <a onclick="changePageCMS()">
-                        <img src="../assert/bill.png" height="75" width="75">
-                    </a>
-                    <label>
-                        ภาระค่าใช้จ่าย
-                    </label>
-                </div>
-            </div>
-
-
-
-        </div>
+        <h1>รายการสอบ</h1>
     </div>
+    <br>
+    <div class="container">
+            <div class="row">
+                    <div class="col"><label>เทอม/ปี</label> <label id="Show"></label></div>
+    
+    
+            </div>
+            <div class="row">
+                <table class="table" id="list">
+                    <tr>
+                        <th scope="col">ชื่อวิชา</th>
+                        <th scope="col">วันที่สอบ</th>
+                        <th scope="col">ตึก</th>
+                        <th scope="col">ห้อง</th>
+                        <th scope="col">ที่นั่ง</th>
+                        <th scope="col">เริ่มสอบ</th>
+                        <th scope="col">หมดเวลาสอบ</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
 </body>
 
 </html>

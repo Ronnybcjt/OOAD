@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <script src="../component/examiner.js" type="text/javascript"></script>
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        .containerCenter {
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .img-center {
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="../../node_modules/axios/dist/axios.min.js"></script>
+    <script>
+        var allClass
+        var allExam
+        document.addEventListener("DOMContentLoaded", checkName(),showDataYear());
+        function checkName(){
+            axios.get("http://localhost:4001/getExams").then((res) => {
+                var a = []
+                a = res.data
+                allExam = a
+                console.log(allExam.data.length)
+                checkUserName(allExam)
+            })
+        }
+
+        function showDataYear() {
+            axios.get("http://localhost:4001/getYear" ).then((res) => {
+                var a = res.data
+                console.log(a.data[0].year)
+                document.getElementById("Show").innerHTML = a.data[0].year
+            })
+        }
+        
+    </script>
+    <nav class="navbar navbar-dark bg-primary">
+        <h1 class="text-light">
+            OOAD
+        </h1>
+    </nav>
+    <br>
+    <br>
+    <div class="container">
+        <h1>รายการสอบ</h1>
+    </div>
+    <br>
+    <div class="container">
+            <div class="row">
+                    <div class="col"><label>เทอม/ปี</label> <label id="Show"></label></div>
+    
+    
+            </div>
+            <div class="row">
+                <table class="table" id="list">
+                    <tr>
+                        <th scope="col">ชื่อวิชา</th>
+                        <th scope="col">วันที่สอบ</th>
+                        <th scope="col">ตึก</th>
+                        <th scope="col">ห้อง</th>
+                        <th scope="col">เริ่มสอบ</th>
+                        <th scope="col">หมดเวลาสอบ</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+</body>
+
+</html>

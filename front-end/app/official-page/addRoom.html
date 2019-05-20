@@ -83,7 +83,16 @@
 <body>
     <script src="../../../node_modules/axios/dist/axios.min.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", showData(),getBuild());
+        document.addEventListener("DOMContentLoaded", showData(),getBuild(),showDataYear());
+
+        function showDataYear() {
+            axios.get("http://localhost:4001/getYear" ).then((res) => {
+                var a = res.data
+                console.log(a.data[0].year)
+                document.getElementById("Show").innerHTML = a.data[0].year
+            })
+        }
+
         function showData() {
             var b = { type: "rooms" }
             axios.get("http://localhost:4001/getRooms", b).then((res) => {
@@ -137,7 +146,7 @@
             var obj = { id: a }
             if (checkDelete) {
                 if (a !== "") {
-                    axios.post("http://localhost:4001/deleteRooms", { obj, b }).then((res) => {
+                    axios.post("http://localhost:4001/deleteClass", { obj, b }).then((res) => {
                         location.reload();
                     })
                 } else {
@@ -254,7 +263,7 @@
 
     <div class="container">
         <div class="row">
-            <div class="col"><label>เทอม/ปี</label></div>
+                <div class="col"><label>เทอม/ปี</label> <label id="Show"></label></div>
 
 
         </div>

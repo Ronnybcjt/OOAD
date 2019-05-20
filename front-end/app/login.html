@@ -32,6 +32,9 @@
                     var checkType = res.data.user_type
                     if (checkUsername !== undefined) {
                         if (checkPassword === document.getElementById("password").value) {
+                            localStorage.setItem('userId',res.data.id)
+                            localStorage.setItem('userName',res.data.name)
+                            localStorage.setItem('userLastname',res.data.lastname)
                             changePage(checkType)
                         } else {
                             alert("กรุณาใส่ password ให้ถูกต้อง")

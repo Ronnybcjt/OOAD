@@ -1,25 +1,25 @@
 /* eslint-disable no-undef */
 /* eslint-disable camelcase */
 /* eslint-disable no-unused-vars */
-function changePageCMS () {
+function changePageCMS() {
   alert('Comming soon')
 }
-function changePage () {
+function changePage() {
   document.location.href = './official-page/editPage.html'
 }
 
-function changeToBuild () {
+function changeToBuild() {
   document.location.href = './official-page/editBuild.html'
 }
 
-function logout () {
+function logout() {
   var lg = confirm('ต้องการออกจากระบบ?')
   if (lg) {
     document.location.href = './login.html'
   }
 }
 
-function generate_table (a) {
+function generate_table(a) {
   var table = document.getElementById('list')
   console.log(a)
   console.log('check length ' + a.data.length)
@@ -45,7 +45,90 @@ function generate_table (a) {
   }
 }
 
-function generate_table_build (a) {
+function generate_table_exam(a) {
+  var table = document.getElementById('list')
+  console.log(a)
+  console.log('check length ' + a.data.length)
+  for (var i = 0; i < a.data.length; i++) {
+    console.log('loop pass')
+    var newRow = table.insertRow(1)
+
+    var id = newRow.insertCell(0)
+    var className = newRow.insertCell(1)
+    var room = newRow.insertCell(2)
+    var group = newRow.insertCell(3)
+    var date = newRow.insertCell(4)
+    var startTime = newRow.insertCell(5)
+    var endTime = newRow.insertCell(6)
+    var crud = newRow.insertCell(7)
+
+    id.innerHTML = a.data[i]._id
+    className.innerHTML = a.data[i].className
+    room.innerHTML = a.data[i].room
+    group.innerHTML = a.data[i].group
+    date.innerHTML = a.data[i].date
+    startTime.innerHTML = a.data[i].startTime
+    endTime.innerHTML = a.data[i].endTime
+    crud.innerHTML = `<button data-toggle="modal" data-target="#editUser" onclick="selectData(this)" class="btn btn-success">Edit</button> <button onclick="deleteData(this)" class="btn btn-danger">Delete</button>`
+  }
+}
+
+function generate_table_class(a) {
+  var table = document.getElementById('list')
+  console.log(a)
+  console.log('check length ' + a.data.length)
+  for (var i = 0; i < a.data.length; i++) {
+    console.log('loop pass')
+    var newRow = table.insertRow(1)
+
+    var id = newRow.insertCell(0)
+    var className = newRow.insertCell(1)
+    var classID = newRow.insertCell(2)
+    var teacher = newRow.insertCell(3)
+    var group = newRow.insertCell(4)
+    var crud = newRow.insertCell(5)
+
+    id.innerHTML = a.data[i]._id
+    className.innerHTML = a.data[i].className
+    classID.innerHTML = a.data[i].classID
+    teacher.innerHTML = a.data[i].teacher
+    group.innerHTML = a.data[i].group
+    crud.innerHTML = `<button data-toggle="modal" data-target="#editClass" onclick="selectClass(this)" class="btn btn-success">Edit</button> <button onclick="deleteData(this)" class="btn btn-danger">Delete</button>`
+  }
+}
+
+function selectClass(td) {
+  selectedRow = td.parentElement.parentElement
+  document.getElementById('className-1').value = selectedRow.cells[1].innerHTML
+  document.getElementById('classID-1').value = selectedRow.cells[2].innerHTML
+  document.getElementById('section-1').value = selectedRow.cells[4].innerHTML
+}
+
+function generate_table_classEdit(a) {
+  var table = document.getElementById('list')
+  console.log(a)
+  console.log('check length ' + a.data.length)
+  for (var i = 0; i < a.data.length; i++) {
+    console.log('loop pass')
+    var newRow = table.insertRow(1)
+
+    var id = newRow.insertCell(0)
+    var className = newRow.insertCell(1)
+    var classID = newRow.insertCell(2)
+    var teacher = newRow.insertCell(3)
+    var group = newRow.insertCell(4)
+    var crud = newRow.insertCell(5)
+
+    id.innerHTML = a.data[i]._id
+    className.innerHTML = a.data[i].className
+    classID.innerHTML = a.data[i].classID
+    teacher.innerHTML = a.data[i].teacher
+    group.innerHTML = a.data[i].group
+    crud.innerHTML = `<button data-toggle="modal" data-target="#editClass" onclick="selectData(this)" class="btn btn-success">Edit</button> <button onclick="deleteData(this)" class="btn btn-danger">Delete</button>`
+  }
+}
+
+function generate_table_build(a) {
   var table = document.getElementById('list')
   console.log(a)
   console.log('check length ' + a.data.length)
@@ -69,7 +152,7 @@ function generate_table_build (a) {
   }
 }
 
-function generate_table_subjects (a) {
+function generate_table_subjects(a) {
   var table = document.getElementById('list')
   console.log(a)
   console.log('check length ' + a.data.length)
@@ -90,7 +173,7 @@ function generate_table_subjects (a) {
     crud.innerHTML = `<button data-toggle="modal" data-target="#editClassModal" onclick="selectSubject(this)" class="btn btn-success">Edit</button> <button onclick="deleteData(this)" class="btn btn-danger">Delete</button>`
   }
 }
-function generate_table_rooms (a) {
+function generate_table_rooms(a) {
   var table = document.getElementById('list')
   console.log(a)
   console.log('check length ' + a.data.length)
@@ -114,7 +197,7 @@ function generate_table_rooms (a) {
   }
 }
 
-function selectData (td) {
+function selectData(td) {
   // eslint-disable-next-line no-undef
   selectedRow = td.parentElement.parentElement
   document.getElementById('id-1').value = selectedRow.cells[0].innerHTML
@@ -125,7 +208,7 @@ function selectData (td) {
   document.getElementById('lastname-1').value = selectedRow.cells[5].innerHTML
 }
 
-function clearData () {
+function clearData() {
   console.log('clear data pass')
   document.getElementById('id').value = ''
   document.getElementById('password').value = ''
@@ -134,14 +217,14 @@ function clearData () {
   document.getElementById('name').value = ''
   document.getElementById('lastname').value = ''
 }
-function deleteData (td) {
+function deleteData(td) {
   selectedRow = td.parentElement.parentElement
   var obj = selectedRow.cells[0].innerHTML
   console.log('delete data ' + obj)
   deleteRow(obj)
 }
 
-function checkEmpty () {
+function checkEmpty() {
   if (document.getElementById('id').value !== '') {
     if (document.getElementById('password').value !== '') {
       if (document.getElementById('type').value !== '') {
@@ -168,7 +251,7 @@ function checkEmpty () {
     return false
   }
 }
-function checkEmptyEdit () {
+function checkEmptyEdit() {
   if (document.getElementById('id-1').value !== '') {
     if (document.getElementById('password-1').value !== '') {
       if (document.getElementById('type-1').value !== '') {
@@ -196,7 +279,7 @@ function checkEmptyEdit () {
   }
 }
 
-function checkEmptyBuild () {
+function checkEmptyBuild() {
   if (document.getElementById('id').value !== '') {
     if (document.getElementById('nameBuild').value !== '') {
       if (document.getElementById('areaBuild').value !== '') {
@@ -220,7 +303,7 @@ function checkEmptyBuild () {
   }
 }
 
-function checkEmptySubject () {
+function checkEmptySubject() {
   if (document.getElementById('id').value !== '') {
     if (document.getElementById('className').value !== '') {
       if (document.getElementById('credit').value !== '') {
@@ -240,7 +323,7 @@ function checkEmptySubject () {
   }
 }
 
-function roomBuild (a) {
+function roomBuild(a) {
   var select = document.getElementById('selectBuild')
 
   for (var i = 0; i < a.data.length; i++) {
@@ -253,7 +336,19 @@ function roomBuild (a) {
   roomBuild2(a)
 }
 
-function roomBuild2 (a) {
+function build(a) {
+  var select = document.getElementById('selectBuild')
+
+  for (var i = 0; i < a.data.length; i++) {
+    var opt = a.data[i].id
+    var el = document.createElement('option')
+    el.textContent = opt
+    el.value = opt
+    select.appendChild(el)
+  }
+}
+
+function roomBuild2(a) {
   var select = document.getElementById('selectBuild-1')
 
   for (var i = 0; i < a.data.length; i++) {
@@ -265,7 +360,7 @@ function roomBuild2 (a) {
   }
 }
 
-function classSubject (a) {
+function classSubject(a) {
   var select = document.getElementById('className')
 
   for (var i = 0; i < a.data.length; i++) {
@@ -278,7 +373,7 @@ function classSubject (a) {
   classSubject2(a)
 }
 
-function classSubject2 (a) {
+function classSubject2(a) {
   // var select = document.getElementById('className-1')
 
   // for (var i = 0; i < a.data.length; i++) {
@@ -290,7 +385,7 @@ function classSubject2 (a) {
   // }
 }
 
-function teacher (a) {
+function teacher(a) {
   var select = document.getElementById('teacherName')
 
   for (var i = 0; i < a.data.length; i++) {
@@ -305,7 +400,7 @@ function teacher (a) {
   teacher2(a)
 }
 
-function teacher2 (a) {
+function teacher2(a) {
   // var select = document.getElementById('className-1')
 
   // for (var i = 0; i < a.data.length; i++) {
@@ -317,7 +412,20 @@ function teacher2 (a) {
   // }
 }
 
-function checkEmptyRoom () {
+function rooms(a) {
+  var select = document.getElementById('selectRoom')
+
+  for (var i = 0; i < a.data.length; i++) {
+    var opt = a.data[i].id
+    var el = document.createElement('option')
+    el.textContent = opt
+    el.value = opt
+    select.appendChild(el)
+  }
+  //roomBuild2(a)
+}
+
+function checkEmptyRoom() {
   if (document.getElementById('id').value !== '') {
     if (document.getElementById('selectBuild').value !== '') {
       if (document.getElementById('floor').value !== '') {
@@ -341,7 +449,7 @@ function checkEmptyRoom () {
   }
 }
 
-function checkEmptySubjectEdit () {
+function checkEmptySubjectEdit() {
   if (document.getElementById('id-1').value !== '') {
     if (document.getElementById('className-1').value !== '') {
       if (document.getElementById('credit-1').value !== '') {
@@ -361,7 +469,7 @@ function checkEmptySubjectEdit () {
   }
 }
 
-function checkEmptyRoomEdit () {
+function checkEmptyRoomEdit() {
   if (document.getElementById('id-1').value !== '') {
     if (document.getElementById('selectBuild-1').value !== '') {
       if (document.getElementById('floor-1').value !== '') {
@@ -385,7 +493,7 @@ function checkEmptyRoomEdit () {
   }
 }
 
-function checkEmptyBuildEdit () {
+function checkEmptyBuildEdit() {
   if (document.getElementById('id-1').value !== '') {
     if (document.getElementById('nameBuild-1').value !== '') {
       if (document.getElementById('areaBuild-1').value !== '') {
@@ -409,7 +517,7 @@ function checkEmptyBuildEdit () {
   }
 }
 
-function selectBuild (td) {
+function selectBuild(td) {
   selectedRow = td.parentElement.parentElement
   document.getElementById('id-1').value = selectedRow.cells[0].innerHTML
   document.getElementById('nameBuild-1').value = selectedRow.cells[1].innerHTML
@@ -418,7 +526,7 @@ function selectBuild (td) {
   document.getElementById('floorBuild-1').value = selectedRow.cells[4].innerHTML
 }
 
-function clearBuild () {
+function clearBuild() {
   document.getElementById('id').value = ''
   document.getElementById('nameBuild').value = ''
   document.getElementById('areaBuild').value = ''
@@ -426,14 +534,14 @@ function clearBuild () {
   document.getElementById('floorBuild').value = ''
 }
 
-function selectSubject (td) {
+function selectSubject(td) {
   selectedRow = td.parentElement.parentElement
   document.getElementById('id-1').value = selectedRow.cells[0].innerHTML
   document.getElementById('className-1').value = selectedRow.cells[1].innerHTML
   document.getElementById('credit-1').value = selectedRow.cells[2].innerHTML
   document.getElementById('faculty-1').value = selectedRow.cells[3].innerHTML
 }
-function selectRoom (td) {
+function selectRoom(td) {
   selectedRow = td.parentElement.parentElement
   document.getElementById('id-1').value = selectedRow.cells[0].innerHTML
   document.getElementById('selectBuild-1').value = selectedRow.cells[1].innerHTML
@@ -441,3 +549,21 @@ function selectRoom (td) {
   document.getElementById('faculty-1').value = selectedRow.cells[3].innerHTML
   document.getElementById('seat-1').value = selectedRow.cells[4].innerHTML
 }
+
+// function selectClass (td) {
+//   selectedRow = td.parentElement.parentElement
+//   document.getElementById('id-1').value = selectedRow.cells[0].innerHTML
+//   document.getElementById('nameBuild-1').value = selectedRow.cells[1].innerHTML
+//   document.getElementById('areaBuild-1').value = selectedRow.cells[2].innerHTML
+//   document.getElementById('facBuild-1').value = selectedRow.cells[3].innerHTML
+//   document.getElementById('floorBuild-1').value = selectedRow.cells[4].innerHTML
+// }
+
+// function clearClass (td) {
+//   selectedRow = td.parentElement.parentElement
+//   document.getElementById('id-1').value = selectedRow.cells[0].innerHTML
+//   document.getElementById('selectBuild-1').value = selectedRow.cells[1].innerHTML
+//   document.getElementById('floor-1').value = selectedRow.cells[2].innerHTML
+//   document.getElementById('faculty-1').value = selectedRow.cells[3].innerHTML
+//   document.getElementById('seat-1').value = selectedRow.cells[4].innerHTML
+// }

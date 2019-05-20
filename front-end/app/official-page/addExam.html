@@ -3,10 +3,12 @@
 
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
-    
-    <script src="../../node_modules/jquery/dist/jquery.js"></script>
-    <script src="../../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+        integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <script src="../../component/official.js" type="text/javascript"></script>
+    <script src="../../../node_modules/jquery/dist/jquery.js"></script>
+    <script src="../../../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 
     <style>
         .center {
@@ -78,146 +80,390 @@
             background-color: rgba(0, 0, 0, 0.1);
         }
     </style>
+
 </head>
 
 <body>
-  
+    <script src="../../../node_modules/axios/dist/axios.min.js"></script>
+    <script>
+        var teacherName = new Array()  //output teacherName
+        var dataSubjects
+        var group
+        var selectClassID
+
+        document.addEventListener("DOMContentLoaded", getClass(), getTeacher(), getRooms(), getBuilds(),showData(),showDataYear());
+        
+        function showDataYear() {
+            axios.get("http://localhost:4001/getYear" ).then((res) => {
+                var a = res.data
+                console.log(a.data[0].year)
+                document.getElementById("Show").innerHTML = a.data[0].year
+            })
+        }
+        
+        function getSubject() {
+            var b = { type: "subjects" }
+            axios.get("http://localhost:4001/getSubjects", b).then((res) => {
+                var a = []
+                a = res.data
+                dataSubjects = res.data
+                console.log(a)
+                classSubject(a)
+            })
+        }
+        function getTeacher() {
+            var b = { type: "users" }
+            axios.get("http://localhost:4001/getdata", b).then((res) => {
+                var a = []
+                a = res.data
+                console.log(a)
+                teacher(a)
+            })
+        }
+
+        function getRooms() {
+            var b = { type: "users" }
+            axios.get("http://localhost:4001/getRooms", b).then((res) => {
+                var a = []
+                a = res.data
+                console.log(a)
+                rooms(a)
+            })
+        }
+
+        function getBuilds() {
+            var b = { type: "users" }
+            axios.get("http://localhost:4001/getBuilds", b).then((res) => {
+                var a = []
+                a = res.data
+                console.log(a)
+                build(a)
+            })
+        }
+
+        function getClass() {
+            axios.get("http://localhost:4001/getClass").then((res) => {
+                var a = []
+                a = res.data
+                dataSubjects = res.data
+                console.log(a)
+                classSubject(a)
+            })
+        }
+
+        function addExam() {
+            var obj = { 
+                className: document.getElementById("className").value, 
+                classID: selectClassID, 
+                examiner: teacherName, 
+                room: document.getElementById("selectRoom").value,
+                build: document.getElementById("selectBuild").value,
+                group: group,
+                date: document.getElementById("date").value,
+                type: document.getElementById("examType").value,
+                startTime: document.getElementById("time1").value,
+                endTime: document.getElementById("time2").value
+            }
+            axios.post("http://localhost:4001/addExam", { obj }).then((res) => {
+                if (res.data.status) {
+                    location.reload();
+                } else {
+                    alert("มีวิชานี้มีอยู่แล้วในระบบ")
+                }
+            })
+        }
+
+        function showData() {
+            axios.get("http://localhost:4001/getExams").then((res) => {
+                var a = []
+                a = res.data
+                generate_table_exam(a)
+            })
+        }
+        function deleteRow(a) {
+            var checkDelete = confirm("ต้องการจะลบข้อมูลนี้จริงๆหรือไม่")
+            var b = { type: "rooms" }
+            var obj = { id: a }
+            if (checkDelete) {
+                if (a !== "") {
+                    axios.post("http://localhost:4001/deleteExam", { obj, b }).then((res) => {
+                        location.reload();
+                    })
+                } else {
+                    alert("กรุณาลองใหม่ภายหลัง")
+                }
+            } else {
+                console.log("cancle")
+            }
+        }
+
+
+        function showSubjectId() {
+            console.log("show doing")
+            console.log(dataSubjects)
+            for (i = 0; i < dataSubjects.data.length; i++) {
+                console.log(dataSubjects.data[i].className)
+                if (document.getElementById("className").value === dataSubjects.data[i].className) {
+                    document.getElementById("classID").value = dataSubjects.data[i].classID
+                    document.getElementById("section").value = dataSubjects.data[i].group
+                    selectClassID = dataSubjects.data[i].classID
+                    group = dataSubjects.data[i].group
+                }
+            }
+        }
+        function removeTag(e) {
+            e.parentNode.parentNode.removeChild(e.parentNode);
+            //console.log(e.parentNode.innerText)
+            for (i = 0; i < teacherName.length; i++) {
+                if (teacherName[i] == e.parentNode.innerText) {
+                    //console.log(teacherName[i])
+                    teacherName.splice(i, 1);
+                }
+            }
+            console.log(teacherName)
+        }
+
+        function select() {
+            var value = document.getElementById("teacherName").value;
+            var x = document.createElement("span");
+            var flag = true;
+
+
+
+
+            if (value != "") {
+
+
+
+                for (i = 0; i < teacherName.length; i++) {
+                    if (teacherName[i] == document.getElementById("teacherName").value) {
+                        flag = false
+
+                    }
+                }
+                if (flag == true) {
+                    x.setAttribute("class", "badge badge-pill badge-primary");
+                    x.setAttribute("id", "a");
+
+                    var c = document.createElement("button");
+
+                    c.setAttribute("class", "btn btn-primary");
+                    c.setAttribute("type", "button");
+                    c.setAttribute("onclick", "removeTag(this)");
+
+                    var d = document.createElement("i");
+                    d.setAttribute("class", "fas fa-times")
+
+                    c.appendChild(d);
+
+
+
+
+                    x.innerText = document.getElementById("teacherName").value;
+                    x.appendChild(c);
+
+
+                    document.getElementById("tag").appendChild(x);
+                    document.getElementById("tag").innerHTML += "&nbsp;";
+
+
+                    teacherName.push(document.getElementById("teacherName").value)
+
+                    flag = false;
+
+                }
+
+
+            }
+            console.log(teacherName)
+
+
+        }
+
+        $('.custom-file-input').on('change', function () {
+            let fileName = $(this).val().split('\\').pop();
+            $(this).siblings('.custom-file-label').addClass('selected').html(fileName);
+        });
+
+
+
+
+
+
+
+    </script>
     <nav class="navbar navbar-light " style="background-color:#007bff;">
         <h1 class="text-light container">OOAD</h1>
         <form class="form-inline">
-            <a class="btn btn-outline-light my-2 my-sm-0" href="officialPage.html">Home</a>
+            <a class="btn btn-outline-light my-2 my-sm-0" href="../officialPage.html">Home</a>
         </form>
     </nav>
     <br />
     <br />
-    <center><h1>จัดการการสอบ</h1></center>
-    
+    <center>
+        <h1>จัดการการสอบ</h1>
+    </center>
+
     <div class="row container flex-row-reverse">
-        
-            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addExamModal">
-                    เพิ่มการสอบ
-                  </button>
-        </div>
-        <br />
-   
-          
-          <!-- Modal -->
-          <div class="modal fade" id="addExamModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
+
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addClassModal">
+            เพิ่มการสอบ
+        </button>
+    </div>
+    <br />
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="addClassModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">เพิ่มการสอบ</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
+                    <h5 class="modal-title" id="exampleModalLabel">เพิ่มการสอบ</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">
-                        <div class="container p-3 mb-2 text-dark">
-                                <div class="row">
-                                    <div class="col">
-                                        <label>รหัสวิชา</label>
-                                        <select class="custom-select" id="classId">
-                                                <option value="88624459-59">88624459-59</option>
-                                                <option value="88624559-59">88624559-59</option>
-                                               
-                                            </select>
-                                    </div>
-                                    <div class="col">
-                                        <label>ชื่อวิชา</label>
-                                        <select class="custom-select" id="className">
-                                                <option value="Object-Oriented Analysis and Design">Object-Oriented Analysis and Design</option>
-                                                <option value="	Software Testing">	Software Testing</option>
-                                                
-                                            </select>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col">
-                                        <label>ห้องสอบ</label>
-                                        <select class="custom-select" id="room">
-                                            <option value="IF-4M210 ">IF-4M210 </option>
-                                            <option value="IF-11M280 ">IF-11M280 </option>
-                                        </select>
-                                    </div>
-                                    <div class="col">
-                                        <label>ประเภท</label>
-                                        <select class="custom-select" id="type">
-                                            <option value="Lecture">Lecture</option>
-                                            <option value="Lab">Lab</option>
-                                            
-                                        </select>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col">
-                                        <label>วัน - เวลา</label>
-                                        <select class="custom-select" id="dateTime">
-                                                <option value="IF">13.00 - 16.00</option>
-                                                <option value="SD">9.00 - 12.00</option>
-                                                
-                                            </select>
-                                    </div>
-                                    <div class="col">
-                                        <label>ผู้คุมสอบ</label>
-                                        <select class="custom-select" id="examiner">
-                                                <option value="Kob">Kob</option>
-                                                <option value="Jo">Jo</option>
-                                                <option value="John">John</option>
-                                                
-                                            </select>
-                                    </div>
-                                    
-                                </div>
-                                <br>
-                                <div class="row">
-                                        <div class="col">
-                                            <label>ตึก</label>
-                                            <select class="custom-select" id="building">
-                                                    <option value="IF">IF</option>
-                                                    <option value="SD">SD</option>
-                                                    
-                                                </select>
-                                        </div>
-                                        
-                                    </div>
+                    <div class="container p-3 mb-2 text-dark">
+                        <div class="row">
+                            <div class="col">
+                                <label>เลือกรายวิชา</label>
+                                <select class="custom-select" id="className" onchange="showSubjectId();">
+
+                                </select>
                             </div>
-                  
+                            <div class="col">
+                                <label>รหัสวิชา</label>
+                                <input class="form-control" id="classID">
+                            </div>
+                        </div>
+                        <br>
+
+
+                        <div class="row">
+                            <div class="col">
+                                <label>เพิ่มผู้คุมสอบ</label>
+                                <div class="input-group">
+                                    <select class="custom-select" id="teacherName">
+
+                                    </select>
+                                    <span class="input-group-btn">
+                                        &nbsp; <button class="btn btn-primary" type="button" id="teacher"
+                                            onclick="select()">&nbsp;&nbsp; OK
+                                            &nbsp;&nbsp;</button>
+                                    </span>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col">
+                                <div id="tag">
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <br>
+
+                        <div class="row">
+                            <div class="col">
+
+                                <label>ห้องสอบ</label>
+                                <select class="custom-select" id="selectRoom">
+
+                                </select>
+                            </div>
+                            <div class="col">
+
+                                <label>อาคาร</label>
+                                <select class="custom-select" id="selectBuild">
+
+                                </select>
+                            </div>
+                            <div class="col">
+
+                                <label>กลุ่ม</label>
+                                <input type="text" class="form-control" id="section">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col">
+                                <label>วันที่สอบ</label>
+                                <input type="date" class="form-control" id="date">
+                            </div>
+                            <div class="col">
+                                <label>ประเภทการสอบ</label>
+                                <select class="custom-select" id="examType">
+                                    <option value="IF">Lecture</option>
+                                    <option value="SD">Lab</option>
+
+                                </select>
+
+
+                            </div>
+
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col">
+                                <label>เวลาที่เริ่มสอบ</label>
+                                <input type="time" class="form-control" id="time1">
+
+                            </div>
+                            <div class="col">
+                                <label>ถึง</label>
+                                <input type="time" class="form-control" id="time2">
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
                 </div>
                 <div class="modal-footer">
-                  
-                  <button type="button" class="btn btn-primary">เพิ่มการสอบ</button>
-                  <button type="button" class="btn btn-warning">ล้าง</button>
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+
+                    <button type="button" class="btn btn-primary" onclick="addExam();">บันทึก</button>
+                    <button type="button" class="btn btn-warning">ล้าง</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
                 </div>
-              </div>
+
             </div>
-          </div>
+
+        </div>
+
+    </div>
+    </div>
 
 
 
-    
+
     <div class="container">
-            <div class="row">
-                    <div class="col"><label>เทอม/ปี</label></div>
-                        
-                        
-                    </div>
+        <div class="row">
+                <div class="col"><label>เทอม/ปี</label> <label id="Show"></label></div>
+
+
+        </div>
         <div class="row">
             <table class="table" id="list">
                 <tr>
-                    <th scope="col">รหัสวิชา</th>
+                    <th scope="col">_id</th>
                     <th scope="col">ชื่อวิชา</th>
                     <th scope="col">ห้องสอบ</th>
-                    <th scope="col">ประเภท</th>
-                    <th scope="col">วัน - เวลา</th>
-                    <th scope="col">ผู้คุมสอบ</th>
-                    <th scope="col">ตึก</th>
+                    <th scope="col">กลุ่ม</th>
+                    <th scope="col">วันสอบ</th>
+                    <th scope="col">เริ่ม</th>
+                    <th scope="col">จบ</th>
                 </tr>
             </table>
         </div>
     </div>
+
 </body>
 
 </html>
