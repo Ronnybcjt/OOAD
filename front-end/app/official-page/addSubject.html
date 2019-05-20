@@ -132,10 +132,8 @@
         }
 
         function deleteRow(a) {
-            var checkDelete = confirm("ต้องการจะลบข้อมูลนี้จริงๆหรือไม่")
             var b = { type: "subjects" }
             var obj = { id: a }
-            if (checkDelete) {
                 if (a !== "") {
                     axios.post("http://localhost:4001/deleteSubjects", { obj, b }).then((res) => {
                         location.reload();
@@ -143,9 +141,6 @@
                 } else {
                     alert("กรุณาลองใหม่ภายหลัง")
                 }
-            } else {
-                console.log("cancle")
-            }
         }
     </script>
     <nav class="navbar navbar-light " style="background-color:#007bff;">

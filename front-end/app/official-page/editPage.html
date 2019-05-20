@@ -121,10 +121,8 @@
             }
         }
         function deleteRow(a) {
-            var checkDelete = confirm("ต้องการจะลบข้อมูลนี้จริงๆหรือไม่")
             var obj = { id: a }
             var b = { type: "users" }
-            if (checkDelete) {
                 if (a !== "") {
                     axios.post("http://localhost:4001/delete", { obj, b }).then((res) => {
                         location.reload();
@@ -132,9 +130,6 @@
                 } else {
                     alert("กรุณาลองใหม่ภายหลัง")
                 }
-            } else {
-                console.log("cancle")
-            }
         }
         document.addEventListener("DOMContentLoaded", showData());
     </script>

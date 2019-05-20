@@ -13,10 +13,7 @@ function changeToBuild() {
 }
 
 function logout() {
-  var lg = confirm('ต้องการออกจากระบบ?')
-  if (lg) {
     document.location.href = './login.html'
-  }
 }
 
 function generate_table(a) {

@@ -181,10 +181,8 @@
             })
         }
         function deleteRow(a) {
-            var checkDelete = confirm("ต้องการจะลบข้อมูลนี้จริงๆหรือไม่")
             var b = { type: "rooms" }
             var obj = { id: a }
-            if (checkDelete) {
                 if (a !== "") {
                     axios.post("http://localhost:4001/deleteExam", { obj, b }).then((res) => {
                         location.reload();
@@ -192,9 +190,6 @@
                 } else {
                     alert("กรุณาลองใหม่ภายหลัง")
                 }
-            } else {
-                console.log("cancle")
-            }
         }
 
 
