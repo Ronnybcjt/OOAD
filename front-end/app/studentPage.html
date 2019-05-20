@@ -30,8 +30,8 @@
     <script>
         var allClass
         var allExam
-        document.addEventListener("DOMContentLoaded", checkName(),showDataYear());
-        function checkName(){
+        document.addEventListener("DOMContentLoaded", checkName(), showDataYear());
+        function checkName() {
             axios.get("http://localhost:4001/getExams").then((res) => {
                 var a = []
                 a = res.data
@@ -41,14 +41,14 @@
         }
 
         function showDataYear() {
-            axios.get("http://localhost:4001/getYear" ).then((res) => {
+            axios.get("http://localhost:4001/getYear").then((res) => {
                 var a = res.data
                 console.log(a.data[0].year)
                 document.getElementById("Show").innerHTML = a.data[0].year
             })
         }
 
-        function checkClass(){
+        function checkClass() {
             axios.get("http://localhost:4001/getClass").then((res) => {
                 var a = []
                 a = res.data
@@ -56,15 +56,18 @@
                 getClass(a)
             })
         }
-        function getClass(a){
+        function getClass(a) {
             console.log("going to checkUserName")
-            checkUserName(allExam,allClass)
+            checkUserName(allExam, allClass)
         }
     </script>
     <nav class="navbar navbar-dark bg-primary">
         <h1 class="text-light">
             OOAD
         </h1>
+        <form class="form-inline">
+            <a class="btn btn-outline-light my-2 my-sm-0" onclick="logout()">Logout</a>
+        </form>
     </nav>
     <br>
     <br>
@@ -73,25 +76,25 @@
     </div>
     <br>
     <div class="container">
-            <div class="row">
-                    <div class="col"><label>เทอม/ปี</label> <label id="Show"></label></div>
-    
-    
-            </div>
-            <div class="row">
-                <table class="table" id="list">
-                    <tr>
-                        <th scope="col">ชื่อวิชา</th>
-                        <th scope="col">วันที่สอบ</th>
-                        <th scope="col">ตึก</th>
-                        <th scope="col">ห้อง</th>
-                        <th scope="col">ที่นั่ง</th>
-                        <th scope="col">เริ่มสอบ</th>
-                        <th scope="col">หมดเวลาสอบ</th>
-                    </tr>
-                </table>
-            </div>
+        <div class="row">
+            <div class="col"><label>เทอม/ปี</label> <label id="Show"></label></div>
+
+
         </div>
+        <div class="row">
+            <table class="table" id="list">
+                <tr>
+                    <th scope="col">ชื่อวิชา</th>
+                    <th scope="col">วันที่สอบ</th>
+                    <th scope="col">ตึก</th>
+                    <th scope="col">ห้อง</th>
+                    <th scope="col">ที่นั่ง</th>
+                    <th scope="col">เริ่มสอบ</th>
+                    <th scope="col">หมดเวลาสอบ</th>
+                </tr>
+            </table>
+        </div>
+    </div>
 </body>
 
 </html>
