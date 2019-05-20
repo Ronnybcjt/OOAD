@@ -9,6 +9,6 @@ module.exports = (app) => {
 
     app.post('/deleteClass', classes.delete);
 
-    //app.post('/addClass', classes.insert);
+    app.post('/addClass', classes.insert);
 
 }
