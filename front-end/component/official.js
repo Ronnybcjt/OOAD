@@ -69,7 +69,7 @@ function generate_table_exam(a) {
     date.innerHTML = a.data[i].date
     startTime.innerHTML = a.data[i].startTime
     endTime.innerHTML = a.data[i].endTime
-    crud.innerHTML = `<button data-toggle="modal" data-target="#editUser" onclick="selectData(this)" class="btn btn-success">Edit</button> <button onclick="deleteData(this)" class="btn btn-danger">Delete</button>`
+    crud.innerHTML = `<button onclick="deleteData(this)" class="btn btn-danger">Delete</button>`
   }
 }
 
@@ -93,7 +93,7 @@ function generate_table_class(a) {
     classID.innerHTML = a.data[i].classID
     teacher.innerHTML = a.data[i].teacher
     group.innerHTML = a.data[i].group
-    crud.innerHTML = `<button data-toggle="modal" data-target="#editClass" onclick="selectClass(this)" class="btn btn-success">Edit</button> <button onclick="deleteData(this)" class="btn btn-danger">Delete</button>`
+    crud.innerHTML = `<button onclick="deleteData(this)" class="btn btn-danger">Delete</button>`
   }
 }
 
