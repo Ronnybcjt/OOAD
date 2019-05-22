@@ -92,10 +92,10 @@
         var selectClassID
         var flag = true
 
-        document.addEventListener("DOMContentLoaded", getClass(), getTeacher(), getRooms(), getBuilds(),showData(),showDataYear());
-        
+        document.addEventListener("DOMContentLoaded", getClass(), getTeacher(), getRooms(), getBuilds(), showData(), showDataYear());
+
         function showDataYear() {
-            axios.get("http://localhost:4001/getYear" ).then((res) => {
+            axios.get("http://localhost:4001/getYear").then((res) => {
                 var a = res.data
                 console.log(a.data[0].year)
                 document.getElementById("Show").innerHTML = a.data[0].year
@@ -103,20 +103,20 @@
         }
 
         function Teacher_and_Exam(a) {
-  var select = document.getElementById('teacherName')
+            var select = document.getElementById('teacherName')
 
-  for (var i = 0; i < a.data.length; i++) {
-    if (a.data[i].user_type === 'อาจารย์' || a.data[i].user_type  === 'คนคุมสอบ') {
-      var opt = a.data[i].name + ' ' + a.data[i].lastname
-      var el = document.createElement('option')
-      el.textContent = opt
-      el.value = opt
-      select.appendChild(el)
-    }
-  }
-  teacher2(a)
-}
-        
+            for (var i = 0; i < a.data.length; i++) {
+                if (a.data[i].user_type === 'อาจารย์' || a.data[i].user_type === 'เจ้าหน้าที่') {
+                    var opt = a.data[i].name + ' ' + a.data[i].lastname
+                    var el = document.createElement('option')
+                    el.textContent = opt
+                    el.value = opt
+                    select.appendChild(el)
+                }
+            }
+            teacher2(a)
+        }
+
         function getSubject() {
             var b = { type: "subjects" }
             axios.get("http://localhost:4001/getSubjects", b).then((res) => {
@@ -166,63 +166,63 @@
                 classSubject(a)
             })
         }
-        function checkEmpty(){
+        function checkEmpty() {
             console.log(document.getElementById("section").value)
-            if(document.getElementById("section").value == ""){
+            if (document.getElementById("section").value == "") {
                 //alert("กรุณาใส่เลขกลุ่ม")
                 flag = false
             }
-            if(document.getElementById("date").value == ""){
+            if (document.getElementById("date").value == "") {
                 //alert("กรุณาใส่วันที่สอบ")
                 flag = false
             }
-            if(document.getElementById("time1").value == ""){
+            if (document.getElementById("time1").value == "") {
                 //alert("กรุณาใส่เวลาเริ่มสอบ")
                 flag = false
             }
-            if(document.getElementById("time2").value == ""){
+            if (document.getElementById("time2").value == "") {
                 //alert("กรุณาใส่เวลาที่จบการสอบ")
                 flag = false
             }
-            
-            if(teacherName.length === 0){
+
+            if (teacherName.length === 0) {
                 //alert("กรุณาเลือกผู้คุมสอบ")
                 flag = false
             }
-            
+
             return flag;
         }
 
         function addExam() {
-            if(checkEmpty()){
-                var obj = { 
-                className: document.getElementById("className").value, 
-                classID: selectClassID, 
-                examiner: teacherName, 
-                room: document.getElementById("selectRoom").value,
-                build: document.getElementById("selectBuild").value,
-                group: group,
-                date: document.getElementById("date").value,
-                type: document.getElementById("examType").value,
-                startTime: document.getElementById("time1").value,
-                endTime: document.getElementById("time2").value
-            }
-            axios.post("http://localhost:4001/addExam", { obj }).then((res) => {
-                if (res.data.status) {
-                    location.reload();
-                } else {
-                    alert("มีวิชานี้มีอยู่แล้วในระบบ")
+            if (checkEmpty()) {
+                var obj = {
+                    className: document.getElementById("className").value,
+                    classID: selectClassID,
+                    examiner: teacherName,
+                    room: document.getElementById("selectRoom").value,
+                    build: document.getElementById("selectBuild").value,
+                    group: group,
+                    date: document.getElementById("date").value,
+                    type: document.getElementById("examType").value,
+                    startTime: document.getElementById("time1").value,
+                    endTime: document.getElementById("time2").value
                 }
-            })
+                axios.post("http://localhost:4001/addExam", { obj }).then((res) => {
+                    if (res.data.status) {
+                        location.reload();
+                    } else {
+                        alert("มีวิชานี้มีอยู่แล้วในระบบ")
+                    }
+                })
 
-            flag=true;
+                flag = true;
 
             }
-            else{
+            else {
                 alert("กรุณากรอกข้อมูลให้ครบถ้วน")
                 flag = true;
             }
-            
+
         }
 
         function showData() {
@@ -231,18 +231,18 @@
                 a = res.data
                 generate_table_exam(a)
             })
-            
+
         }
         function deleteRow(a) {
             var b = { type: "rooms" }
             var obj = { id: a }
-                if (a !== "") {
-                    axios.post("http://localhost:4001/deleteExam", { obj, b }).then((res) => {
-                        location.reload();
-                    })
-                } else {
-                    alert("กรุณาลองใหม่ภายหลัง")
-                }
+            if (a !== "") {
+                axios.post("http://localhost:4001/deleteExam", { obj, b }).then((res) => {
+                    location.reload();
+                })
+            } else {
+                alert("กรุณาลองใหม่ภายหลัง")
+            }
         }
 
 
@@ -438,7 +438,7 @@
                                 <label>กลุ่ม</label>
                                 <input type="text" class="form-control" id="section">
                             </div>
-                            
+
                         </div>
                         <br>
                         <div class="row">
@@ -493,7 +493,7 @@
 
     <div class="container">
         <div class="row">
-                <div class="col"><label>เทอม/ปี</label> <label id="Show"></label></div>
+            <div class="col"><label>เทอม/ปี</label> <label id="Show"></label></div>
 
 
         </div>

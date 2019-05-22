@@ -397,6 +397,21 @@ function teacher(a) {
   teacher2(a)
 }
 
+function examiner(a) {
+  var select = document.getElementById('teacherName')
+
+  for (var i = 0; i < a.data.length; i++) {
+    if (a.data[i].user_type !== 'นิสิต') {
+      var opt = a.data[i].name + ' ' + a.data[i].lastname
+      var el = document.createElement('option')
+      el.textContent = opt
+      el.value = opt
+      select.appendChild(el)
+    }
+  }
+  teacher2(a)
+}
+
 function teacher2(a) {
   // var select = document.getElementById('className-1')
 
